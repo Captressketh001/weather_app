@@ -10,6 +10,12 @@ const reportSection8 = document.getElementById('weather-report8');
 const cityForm = document.getElementById('city-form');
 const cityInput = document.getElementById('city-input');
 
+// function to round up temp to 1 d.p
+function round(value, precision) {
+    var multiplier = Math.pow(10, precision || 0);
+    return Math.round(value * multiplier) / multiplier;
+}
+
 let apiRequest = new XMLHttpRequest();
 
 
@@ -32,12 +38,13 @@ apiRequest.onreadystatechange = () => {
                 return  reportSection1.textContent = 'city not found!';
             }
         const response = JSON.parse(apiRequest.response);
-
+        
+        
         reportSection1.textContent = "What's the weather like today in " + response.name + "," + response.sys.country +"?"
         reportSection2.textContent = response.weather[0].description
-        reportSection3.textContent = response.main.temp + '\u00B0C'
-        reportSection4.textContent = "Day: " + response.main.temp_min + '\u00B0C' + " | Night: "+  response.main.temp_max + '\u00B0C'
-        reportSection5.textContent = "Feels like: " + response.main.feels_like
+        reportSection3.textContent = round(response.main.temp)/10 + '\u00B0C'
+        reportSection4.textContent = "Day: " + round(response.main.temp_min)/10 + '\u00B0C' + " | Night: "+  round(response.main.temp_max)/10 + '\u00B0C'
+        reportSection5.textContent = "Feels like: " + round(response.main.feels_like)/10 + '\u00B0C' 
         reportSection6.textContent = "Pressure: " +response.main.pressure + 'hPa'
         reportSection7.textContent = "Humidity: " + response.main.humidity + '%'
         reportSection8.textContent = "Wind: " +response.wind.speed + 'km/h'
